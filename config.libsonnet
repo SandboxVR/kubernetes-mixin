@@ -66,22 +66,22 @@
     // Config for the Grafana dashboards in the Kubernetes Mixin
     grafanaK8s: {
       dashboardNamePrefix: 'Kubernetes / ',
-      dashboardTags: ['kubernetes-mixin'],
+      dashboardTags: ['kubernetes-mixin', $._config.tenant],
 
       // For links between grafana dashboards, you need to tell us if your grafana
       // servers under some non-root path.
       linkPrefix: '',
 
       // The default refresh time for all dashboards, default to 10s
-      refresh: '10s',
+      refresh: '15s',
       minimumTimeInterval: '1m',
 
       // Timezone for Grafana dashboards:: UTC, browser, ...
-      grafanaTimezone: 'UTC',
+      grafanaTimezone: 'browser',
     },
 
     // Opt-in to multiCluster dashboards by overriding this and the clusterLabel.
-    showMultiCluster: false,
+    showMultiCluster: true,
     clusterLabel: 'cluster',
 
     namespaceLabel: 'namespace',
@@ -109,5 +109,21 @@
 
     // Default timeout value for k8s Jobs. The jobs which are active beyond this duration would trigger KubeJobNotCompleted alert.
     kubeJobTimeoutDuration: 12 * 60 * 60,
+
+    cpuThrottlingSelector: 'container!="metrics-server-nanny"',
+
+    tenant: "online",
+  },
+  prometheusAlerts+:: {
+    local overrides = $.alertOverrides,
+    groups: std.map(function(group)
+      group {
+        rules: std.map(function(rule)
+          rule + {
+            labels+: {
+              tenant: $._config.tenant
+            }
+          }, super.rules),
+      }, super.groups),
   },
 }

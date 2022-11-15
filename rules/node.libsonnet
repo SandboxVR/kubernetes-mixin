@@ -30,7 +30,7 @@
             // This rule gives the number of CPUs per node.
             record: 'node:node_num_cpu:sum',
             expr: |||
-              count by (%(clusterLabel)s, node) (sum by (node, cpu) (
+              count by (%(clusterLabel)s, node) (sum by (%(clusterLabel)s, node, cpu) (
                 node_cpu_seconds_total{%(nodeExporterSelector)s}
               * on (namespace, %(podLabel)s) group_left(node)
                 topk by(namespace, %(podLabel)s) (1, node_namespace_pod:kube_pod_info:)
@@ -56,8 +56,8 @@
             // This rule gives cpu utilization per cluster
             record: 'cluster:node_cpu:ratio_rate5m',
             expr: |||
-              sum(rate(node_cpu_seconds_total{%(nodeExporterSelector)s,mode!="idle",mode!="iowait",mode!="steal"}[5m])) /
-              count(sum(node_cpu_seconds_total{%(nodeExporterSelector)s}) by (%(clusterLabel)s, instance, cpu))
+              sum(rate(node_cpu_seconds_total{%(nodeExporterSelector)s,mode!="idle",mode!="iowait",mode!="steal"}[5m])) by (%(clusterLabel)s) /
+              count(sum(node_cpu_seconds_total{%(nodeExporterSelector)s}) by (%(clusterLabel)s, instance, cpu)) by (%(clusterLabel)s)
             ||| % $._config,
           },
         ],
