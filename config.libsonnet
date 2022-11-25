@@ -112,7 +112,9 @@
 
     cpuThrottlingSelector: 'container!="metrics-server-nanny"',
 
-    tenant: "online",
+    tenant: "ops",
+
+    namespaceSelector: 'namespace!="kube-system"',
   },
   prometheusAlerts+:: {
     local overrides = $.alertOverrides,

@@ -5,5 +5,5 @@
 // (import 'controller-manager.libsonnet') +
 // (import 'scheduler.libsonnet') +
 // (import 'proxy.libsonnet') +
-(import 'kubelet.libsonnet') +
+// (import 'kubelet.libsonnet') +
 (import 'defaults.libsonnet')
