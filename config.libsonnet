@@ -66,7 +66,7 @@
     // Config for the Grafana dashboards in the Kubernetes Mixin
     grafanaK8s: {
       dashboardNamePrefix: 'Kubernetes / ',
-      dashboardTags: ['kubernetes-mixin', $._config.tenant],
+      dashboardTags: ['kubernetes-mixin'],
 
       // For links between grafana dashboards, you need to tell us if your grafana
       // servers under some non-root path.
