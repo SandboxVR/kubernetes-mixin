@@ -110,11 +110,11 @@
     // Default timeout value for k8s Jobs. The jobs which are active beyond this duration would trigger KubeJobNotCompleted alert.
     kubeJobTimeoutDuration: 12 * 60 * 60,
 
-    cpuThrottlingSelector: 'container!="metrics-server-nanny"',
+    cpuThrottlingSelector: 'namespace!="kube-system"',
 
-    tenant: "silica",
+    tenant: "online",
 
-    // namespaceSelector: 'namespace!="kube-system"',
+    namespaceSelector: 'namespace!="kube-system"',
   },
   prometheusAlerts+:: {
     local overrides = $.alertOverrides,
